@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#d64292">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="masterball.png">
+    <link rel="apple-touch-icon" href="masterball.png">
+    <title>Masterdex - A Pokédex Definitiva</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Modern Animated Background -->
+    <div class="bg-elements">
+        <!-- Glowing Orbs -->
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <!-- Floating Pokéball Silhouettes -->
+        <div class="bg-pokeball pb-1"></div>
+        <div class="bg-pokeball pb-2"></div>
+        <div class="bg-pokeball pb-3"></div>
+        <div class="bg-pokeball pb-4"></div>
+        <div class="bg-pokeball pb-5"></div>
+        <div class="bg-pokeball pb-6"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header / Nav -->
+        <header class="header">
+            <div class="logo-container">
+                <img src="masterball.png" alt="Masterball" class="masterball-logo">
+                <h1>Masterdex</h1>
+            </div>
+
+            <nav class="main-tabs">
+                <button class="tab-btn active" data-tab="view-pokedex"><i class="fa-solid fa-book"></i> Pokédex</button>
+                <button class="tab-btn" data-tab="view-natures"><i class="fa-solid fa-leaf"></i> Naturezas</button>
+                <button class="tab-btn" data-tab="view-types"><i class="fa-solid fa-fire"></i> Tipos</button>
+            </nav>
+
+            <div class="controls-container" id="pokedex-controls">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Pesquisar por nome ou ID..." autocomplete="off">
+                    <button id="clear-search" class="clear-btn hidden"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="autocomplete-dropdown hidden" id="autocomplete-results"></div>
+                </div>
+
+                <div class="generation-dropdown-container">
+                    <select id="gen-dropdown" class="gen-dropdown">
+                        <option value="1">Geração I (Kanto)</option>
+                        <option value="2">Geração II (Johto)</option>
+                        <option value="3">Geração III (Hoenn)</option>
+                        <option value="4">Geração IV (Sinnoh)</option>
+                        <option value="5">Geração V (Unova)</option>
+                        <option value="6">Geração VI (Kalos)</option>
+                        <option value="7">Geração VII (Alola)</option>
+                        <option value="8">Geração VIII (Galar)</option>
+                        <option value="9">Geração IX (Paldea)</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="loading-state hidden" id="loading-spinner">
+                <div class="spinner-masterball">
+                    <div class="top-half"></div>
+                    <div class="center-band">
+                        <div class="center-button"></div>
+                    </div>
+                    <div class="bottom-half"></div>
+                </div>
+                <p>Carregando Dados...</p>
+            </div>
+
+            <div class="error-state hidden" id="error-message">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p>Nenhum Pokémon encontrado. Tente outra busca!</p>
+            </div>
+
+            <div id="view-pokedex" class="view-section active">
+                <div class="pokemon-grid" id="pokemon-grid">
+                    <!-- Pokemon Cards injected by JS -->
+                </div>
+
+                <div class="pagination hidden" id="pagination">
+                    <button id="load-more-btn" class="btn primary-btn">Carregar Mais</button>
+                </div>
+            </div>
+
+            <div id="view-natures" class="view-section hidden">
+                <h2 class="view-title">Naturezas (Natures)</h2>
+                <div class="nature-search-container">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="nature-search" placeholder="Buscar natureza..." autocomplete="off">
+                </div>
+                <div class="natures-grid" id="natures-grid">
+                    <!-- Natures Injected by JS -->
+                </div>
+            </div>
+
+            <div id="view-types" class="view-section hidden">
+                <h2 class="view-title">Tabela de Tipos (Type Chart)</h2>
+                <div class="types-container" id="types-container">
+                    <!-- Type Chart Injected by JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para Detalhes -->
+    <div class="modal-overlay hidden" id="pokemon-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-body" id="modal-body">
+                <!-- Inner Modal Content Injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- About / Credits Popup -->
+    <div class="about-overlay hidden" id="about-popup">
+        <div class="about-card">
+            <button class="close-about" id="close-about"><i class="fa-solid fa-xmark"></i></button>
+            <img src="masterball.png" alt="Masterball" class="about-logo">
+            <h2 class="about-title">MASTERDEX</h2>
+            <p class="about-subtitle">A Pokédex Definitiva</p>
+            <div class="about-divider"></div>
+            <p class="about-credit">Desenvolvido por</p>
+            <a href="https://rayllanleitao.com.br" target="_blank" class="about-link">
+                <i class="fa-solid fa-globe"></i> rayllanleitao.com.br
+            </a>
+            <div class="about-divider"></div>
+            <button class="about-install-btn hidden" id="install-btn">
+                <i class="fa-solid fa-download"></i> Salvar como App
+            </button>
+            <p class="about-offline"><i class="fa-solid fa-wifi"></i> Funciona offline após a primeira visita</p>
+            <p class="about-version">v2.2 • Dados: PokéAPI</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="api.js"></script>
+    <script src="modal.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // PWA Install Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) installBtn.classList.remove('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#install-btn') && deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(result => {
+                    deferredPrompt = null;
+                    document.getElementById('install-btn').classList.add('hidden');
+                });
+            }
+        });
+
+        // About popup toggle
+        document.querySelector('.masterball-logo').addEventListener('click', () => {
+            document.getElementById('about-popup').classList.remove('hidden');
+        });
+
+        document.getElementById('close-about').addEventListener('click', () => {
+            document.getElementById('about-popup').classList.add('hidden');
+        });
+
+        document.getElementById('about-popup').addEventListener('click', (e) => {
+            if (e.target.id === 'about-popup') {
+                document.getElementById('about-popup').classList.add('hidden');
+            }
+        });
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('ServiceWorker registered!', reg))
+                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+            });
+        }
+    </script>
+</body>
+
+</html>
