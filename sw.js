@@ -1,4 +1,4 @@
-const CACHE_NAME = 'masterdex-cache-v22';
+const CACHE_NAME = 'masterdex-cache-v23';
 const STATIC_ASSETS = [
     './index.html',
     './styles.css',

@@ -1096,6 +1096,31 @@ body {
     box-shadow: 0 8px 25px rgba(214, 66, 146, 0.4);
 }
 
+.about-install-instructions {
+    background: rgba(139, 77, 151, 0.1);
+    border: 1px solid rgba(139, 77, 151, 0.2);
+    border-radius: 8px;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    text-align: left;
+    animation: slideDown 0.3s ease;
+}
+
+.about-install-instructions p {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin: 0.3rem 0;
+    line-height: 1.5;
+}
+
+.about-install-instructions strong {
+    color: var(--text-primary);
+}
+
+.about-install-instructions i {
+    color: var(--master-pink);
+}
+
 .about-offline {
     color: rgba(82, 224, 82, 0.7);
     font-size: 0.75rem;

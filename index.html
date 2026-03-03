@@ -139,9 +139,10 @@
                 <i class="fa-solid fa-globe"></i> rayllanleitao.com.br
             </a>
             <div class="about-divider"></div>
-            <button class="about-install-btn hidden" id="install-btn">
+            <button class="about-install-btn" id="install-btn">
                 <i class="fa-solid fa-download"></i> Salvar como App
             </button>
+            <div class="about-install-instructions hidden" id="install-instructions"></div>
             <p class="about-offline"><i class="fa-solid fa-wifi"></i> Funciona offline após a primeira visita</p>
             <p class="about-version">v2.2 • Dados: PokéAPI</p>
         </div>
@@ -157,17 +158,47 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            const installBtn = document.getElementById('install-btn');
-            if (installBtn) installBtn.classList.remove('hidden');
         });
 
         document.addEventListener('click', (e) => {
-            if (e.target.closest('#install-btn') && deferredPrompt) {
+            const btn = e.target.closest('#install-btn');
+            if (!btn) return;
+
+            // If native prompt is available (Chrome/Edge + HTTPS)
+            if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then(result => {
                     deferredPrompt = null;
-                    document.getElementById('install-btn').classList.add('hidden');
                 });
+                return;
+            }
+
+            // Show manual instructions
+            const instrBox = document.getElementById('install-instructions');
+            if (instrBox.classList.contains('hidden')) {
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                const isAndroid = /Android/.test(navigator.userAgent);
+
+                if (isIOS) {
+                    instrBox.innerHTML = `
+                        <p><strong>No Safari:</strong></p>
+                        <p>1. Toque em <i class="fa-solid fa-arrow-up-from-bracket"></i> (Compartilhar)</p>
+                        <p>2. Selecione <strong>"Adicionar à Tela de Início"</strong></p>
+                    `;
+                } else if (isAndroid) {
+                    instrBox.innerHTML = `
+                        <p><strong>No Chrome:</strong></p>
+                        <p>1. Toque em <i class="fa-solid fa-ellipsis-vertical"></i> (Menu)</p>
+                        <p>2. Selecione <strong>"Adicionar à tela inicial"</strong></p>
+                    `;
+                } else {
+                    instrBox.innerHTML = `
+                        <p>Use o menu do navegador para <strong>"Instalar app"</strong> ou <strong>"Adicionar à tela inicial"</strong></p>
+                    `;
+                }
+                instrBox.classList.remove('hidden');
+            } else {
+                instrBox.classList.add('hidden');
             }
         });
 
